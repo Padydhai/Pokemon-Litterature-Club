@@ -35,6 +35,8 @@ struct MainState {
     img: graphics::Image,
     img2: graphics::Image,
     bkg: graphics::Image,
+    sound: audio::Source,
+    sound2: audio::Source
 
 }
 
@@ -48,9 +50,9 @@ impl MainState {
         let img = graphics::Image::new(ctx, "/pkm3.png")?;
         let img2 = graphics::Image::new(ctx, "/sbpkm2.png")?;
         let bye = graphics::Text::new(("Appuie sur 'echap' pour quitter.", font, 12.0));
-
         let mut sound = audio::Source::new(ctx, "/soundtrack.mp3")?;
-        let _ = sound.play_detached(ctx);
+        let _ = sound.play(ctx); 
+        let mut sound2 = audio::Source::new(ctx, "/soundtrack2.mp3")?;
 
         let s = MainState { 
             text, 
@@ -58,9 +60,18 @@ impl MainState {
             bye,
             img, 
             img2,
-            bkg };
+            bkg,
+            sound,
+            sound2 };
         Ok(s)
     }
+    
+    fn suite(&mut self, ctx: &mut Context) {
+        let _ = self.sound.stop(ctx);
+        self.sound2.play(ctx);
+        println!("Suite lancée.")
+    }
+
 }
 
 
@@ -87,6 +98,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
         Ok(())
     }
     
+
     fn key_down_event(
         &mut self,
         ctx: &mut Context,
@@ -95,7 +107,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
         _repeat: bool,
     ) { 
         match keycode {
-            //input::keyboard::KeyCode::Space => self.(ctx),
+            input::keyboard::KeyCode::Space => self.suite(ctx),
             input::keyboard::KeyCode::Escape => event::quit(ctx),
             _ => (),
         }
