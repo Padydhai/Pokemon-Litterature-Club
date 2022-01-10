@@ -36,7 +36,8 @@ struct MainState {
     img2: graphics::Image,
     bkg: graphics::Image,
     sound: audio::Source,
-    sound2: audio::Source
+    sound2: audio::Source,
+    selectsound: audio::Source
 
 }
 
@@ -53,6 +54,7 @@ impl MainState {
         let mut sound = audio::Source::new(ctx, "/soundtrack.mp3")?;
         let _ = sound.play(ctx); 
         let mut sound2 = audio::Source::new(ctx, "/soundtrack2.mp3")?;
+        let mut selectsound = audio::Source::new(ctx, "/selectsound.mp3")?;
 
         let s = MainState { 
             text, 
@@ -62,12 +64,15 @@ impl MainState {
             img2,
             bkg,
             sound,
-            sound2 };
+            sound2,
+            selectsound };
         Ok(s)
     }
     
     fn suite(&mut self, ctx: &mut Context) {
         let _ = self.sound.stop(ctx);
+        self.selectsound.play_detached(ctx);
+        self.selectsound.stop(ctx);
         self.sound2.play(ctx);
         println!("Suite lancée.")
     }
