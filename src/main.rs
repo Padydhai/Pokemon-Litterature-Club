@@ -5,7 +5,8 @@
 //use sauv;
 use ggez;
 use ggez::event;
-//use ggez::event::KeyCode;
+use ggez::event::{KeyCode, KeyMods};
+use ggez::input::keyboard;
 use ggez::conf::{WindowMode, WindowSetup};
 use ggez::graphics::{self, Align, Color, DrawParam, Font, PxScale, Text, TextFragment};
 //use ggez::timer;
@@ -29,6 +30,7 @@ pub enum Menu {
 
 //Pour la partie interface
 struct MainState {
+    i: i32,
     text: graphics::Text,
     text2: graphics::Text,
     bye: graphics::Text,
@@ -55,8 +57,10 @@ impl MainState {
         let _ = sound.play(ctx); 
         let mut sound2 = audio::Source::new(ctx, "/soundtrack2.mp3")?;
         let mut selectsound = audio::Source::new(ctx, "/selectsound.mp3")?;
+        let mut i = 0;
 
         let s = MainState { 
+            i,
             text, 
             text2, 
             bye,
@@ -70,11 +74,19 @@ impl MainState {
     }
     
     fn suite(&mut self, ctx: &mut Context) {
-        let _ = self.sound.stop(ctx);
-        self.selectsound.play_detached(ctx);
-        self.selectsound.stop(ctx);
-        self.sound2.play(ctx);
-        println!("Suite lancée.")
+        if self.i < 1 {    
+            let _ = self.sound.stop(ctx);
+            self.selectsound.play_detached(ctx);
+            self.selectsound.stop(ctx);
+            self.sound2.play(ctx);
+            println!("Suite lancée.")
+        } else {
+            println!("RAS")
+        }
+    }
+
+    fn test(&mut self, ctx: &mut Context) {
+        println!("Tu es un génie")
     }
 
 }
@@ -82,6 +94,8 @@ impl MainState {
 
 impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
+     
+
         Ok(())
     }
 
@@ -89,17 +103,25 @@ impl event::EventHandler<ggez::GameError> for MainState {
         graphics::clear(ctx, [0.1, 0.2, 0.3, 1.0].into()); 
 
         let color = Color::from((0, 0, 0, 255));
-        graphics::draw(ctx, &self.bkg, (Vec2::new(0.0, -1000.0),))?;
+
+        if keyboard::is_key_pressed(ctx, KeyCode::Space) {
+            self.i += 1; 
+        }
+
+        if self.i < 1 {
         
-        graphics::draw(ctx, &self.text2, (Vec2::new(205.0, 405.0), color))?;
-        graphics::draw(ctx, &self.text, (Vec2::new(200.0, 400.0),))?;
-        graphics::draw(ctx, &self.bye, (Vec2::new(0.0, 0.0),))?;
+            graphics::draw(ctx, &self.bkg, (Vec2::new(0.0, -1000.0),))?;
         
-        graphics::draw(ctx, &self.img, (Vec2::new(180.0, 100.0),))?;
-        graphics::draw(ctx, &self.img2, (Vec2::new(180.0, 260.0),))?;
+            graphics::draw(ctx, &self.text2, (Vec2::new(205.0, 405.0), color))?;
+            graphics::draw(ctx, &self.text, (Vec2::new(200.0, 400.0),))?;
+            graphics::draw(ctx, &self.bye, (Vec2::new(0.0, 0.0),))?;
+        
+            graphics::draw(ctx, &self.img, (Vec2::new(180.0, 100.0),))?;
+            graphics::draw(ctx, &self.img2, (Vec2::new(180.0, 260.0),))?;
+        }
+        
         graphics::present(ctx)?;
-
-
+        
         Ok(())
     }
     
