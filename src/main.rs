@@ -37,6 +37,9 @@ struct MainState {
     img: graphics::Image,
     img2: graphics::Image,
     bkg: graphics::Image,
+    bkg2: graphics::Image,
+    dia: graphics::Image,
+    expT7: graphics::Image,
     sound: audio::Source,
     sound2: audio::Source,
     selectsound: audio::Source
@@ -47,11 +50,14 @@ impl MainState {
     fn new(ctx: &mut Context) -> GameResult<MainState> {
         
         let bkg = graphics::Image::new(ctx, "/fdpkm.png")?;
+        let bkg2 = graphics::Image::new(ctx, "/fdpkmA3.png")?;
         let font = graphics::Font::new(ctx, "/LiberationMono-Regular.ttf")?;
         let text = graphics::Text::new(("Appuie sur 'espace' pour commencer.", font, 24.0));
         let text2 = graphics::Text::new(("Appuie sur 'espace' pour commencer.", font, 24.0));
         let img = graphics::Image::new(ctx, "/pkm3.png")?;
         let img2 = graphics::Image::new(ctx, "/sbpkm2.png")?;
+        let dia = graphics::Image::new(ctx, "/diag4.png")?;
+        let expT7 = graphics::Image::new(ctx, "/expT7.png")?;
         let bye = graphics::Text::new(("Appuie sur 'echap' pour quitter.", font, 12.0));
         let mut sound = audio::Source::new(ctx, "/soundtrack.mp3")?;
         let _ = sound.play(ctx); 
@@ -67,6 +73,9 @@ impl MainState {
             img, 
             img2,
             bkg,
+            bkg2,
+            dia,
+            expT7,
             sound,
             sound2,
             selectsound };
@@ -119,6 +128,13 @@ impl event::EventHandler<ggez::GameError> for MainState {
             graphics::draw(ctx, &self.img, (Vec2::new(180.0, 100.0),))?;
             graphics::draw(ctx, &self.img2, (Vec2::new(180.0, 260.0),))?;
         }
+
+        if self.i >= 1 {
+            graphics::draw(ctx, &self.bkg2, (Vec2::new(-235.0, 0.0),))?;
+            graphics::draw(ctx, &self.dia, (Vec2::new(200.0, 440.0),))?;
+            graphics::draw(ctx, &self.expT7, (Vec2::new(20.0, 440.0),))?;
+        }
+
         
         graphics::present(ctx)?;
         
