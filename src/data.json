@@ -1,6 +1,16 @@
 {
+    "menu":[
+        "Appuie sur 'espace' pour passer aux pages suivantes.",
+        "Appuie sur 'entrer' pour commencer.",
+        "Appuie sur 'echap' pour quitter."
+    ],
     "acte1":[
         "… Aller… debout… ALLER!!",
-        "C’est le grand jour, le café ne va pas nous attendre pour ouvrir."     
+        "C’est le grand jour, le café ne va pas nous attendre pour ouvrir.",
+        "C’est déjà le matin? Il faut vite se préparer…",
+        "Je t’attends en bas pour le petit déjeuner. Tu préfères des toasts ou des céréales?",
+        "A. Toasts",
+        "Z. Céréales",
+        "Okay, je te prépare ça."
     ]
 }
